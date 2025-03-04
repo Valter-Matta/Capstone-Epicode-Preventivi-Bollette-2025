@@ -1,0 +1,45 @@
+package it.epicode.preventivi.spread;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
+
+import java.util.List;
+
+@Service
+@Validated
+@RequiredArgsConstructor
+public class SpreadGasService {
+    private final SpreadGasRepository repository;
+    private final SpreadGasMapper mapper;
+
+    public List<SpreadGasResponse> findAll() {
+        return mapper.toDto(repository.findAll());
+    }
+
+    public SpreadGasResponse findById(Long id) {
+        return repository.findById(id)
+                .map(mapper::toDto)
+                .orElseThrow(() -> new EntityNotFoundException("SpreadGas not found with id " + id));
+    }
+
+    public SpreadGasResponse save(@Valid SpreadGasRequest request) {
+        SpreadGas SpreadGas = mapper.toEntity(request);
+        return mapper.toDto(repository.save(SpreadGas));
+    }
+
+    public SpreadGasResponse update(Long id, @Valid SpreadGasRequest request) {
+        SpreadGas entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("SpreadGas not found with id " + id));
+        return mapper.toDto(repository.save(entity));
+    }
+
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new EntityNotFoundException("SpreadGas not found with id " + id);
+        }
+        repository.deleteById(id);
+    }
+}

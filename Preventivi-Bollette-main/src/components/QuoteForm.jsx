@@ -13,34 +13,52 @@ export default function QuoteForm() {
 		setFormData({ ...formData, [e.target.name]: e.target.files[0] });
 	};
 
-	// Funzione per inviare i dati al backend
-	const handleSubmit = async e => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-
-		try {
-			const response = await fetch("http://localhost:8080/api/quote", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(formData),
-			});
-
-			if (!response.ok) {
-				throw new Error("Errore nell'invio della richiesta");
-			}
-
-			const result = await response.json();
-			console.log(result);
-
-			alert("Dati inviati con successo!");
-
-			setFormData({});
-		} catch (error) {
-			console.error("Errore:", error);
-			alert("Errore durante l'invio dei dati.");
+		const formDataToSend = new FormData();
+  
+		// Aggiunta del file se presente
+		if (formData.bolletta) {
+			 formDataToSend.append("file", formData.bolletta);
+		} else {
+			 // Aggiunta dei dati manuali con formato (mese e anno)
+			 formDataToSend.append("data_inizio", formData.data_inizio || '');
+			 formDataToSend.append("data_fine", formData.data_fine || '');
+			 formDataToSend.append("tipo", quoteType); // Energia o Gas
+			 formDataToSend.append("consumo", formData.consumo ? parseFloat(formData.consumo) : 0);
+			 formDataToSend.append("consumo_smc", formData.consumo_smc ? parseFloat(formData.consumo_smc) : 0);
+			 formDataToSend.append("potenza", formData.potenza ? parseFloat(formData.potenza) : 0);
 		}
-	};
+  
+		try {
+			 const response = await fetch("http://localhost:8080/api/quote", {
+				  method: "POST",
+				  body: formDataToSend,
+			 });
+  
+			 if (!response.ok) {
+				  const errorData = await response.json();
+				  throw new Error(errorData.message || "Errore nell'invio della richiesta");
+			 }
+  
+			 const result = await response.json();
+			 console.log("Risultato:", result);
+			 alert("Dati inviati con successo!");
+  
+			 // Resetta il form
+			 setFormData({
+				  bolletta: null,
+				  data_inizio: "",
+				  data_fine: "",
+				  consumo: "",
+				  consumo_smc: "",
+				  potenza: "",
+			 });
+		} catch (error) {
+			 console.error("Errore:", error);
+			 alert(`Errore durante l'invio dei dati: ${error.message}`);
+		}
+  };
 
 	const renderForm = () => {
 		if (!quoteType) return null;
@@ -139,9 +157,9 @@ export default function QuoteForm() {
 							</div>
 						)}
 						<button type="submit">Calcola</button>
-					</form>
-					<p className="attention">Oppure</p>
-					<form>
+
+						<p className="attention">Oppure</p>
+
 						<div className="form-group">
 							<label>Carica la bolletta</label>
 							<input
