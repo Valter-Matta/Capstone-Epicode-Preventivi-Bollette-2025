@@ -1,0 +1,101 @@
+.home-container {
+	max-width: 900px;
+	height: 100vh;
+	margin: 20px auto;
+	padding: 20px;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+	color: #2c3e50;
+}
+
+.img-container {
+	padding: 1.5rem;
+	padding-top: 4rem;
+	padding-bottom: 0;
+	margin-bottom: 1.5rem;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.img-container h1 {
+	margin: 0;
+
+	padding-right: 1.5rem;
+	font-size: 2.5rem;
+}
+
+.home-container h2 {
+	margin: 0;
+	margin-top: 1.5rem;
+	font-size: 2rem;
+	text-align: center;
+}
+
+.home-container h1,
+.home-container h2,
+.home-container h3 {
+	color: #2c3e50;
+}
+
+.home-container p,
+.home-container ul {
+	margin: 0.5rem 0;
+	font-weight: 400;
+	font-size: 1.2rem;
+	color: #34495e;
+	background-color: rgba(255, 255, 255, 0.8);
+	padding: 2px;
+	border-radius: 5px;
+}
+.home-container p span {
+	font-weight: bold;
+}
+.img-details-cont {
+	display: flex;
+	justify-content: center;
+}
+.img-details {
+	padding-bottom: 1rem;
+	margin: 0 auto;
+}
+
+/*dettaglio bolletta*/
+.consumo {
+	color: #0b9061;
+}
+.spesa-variabile {
+	color: #d01559;
+}
+.fixed {
+	color: #d01559;
+	fill: #d01559;
+	display: inline-flex;
+	justify-content: center;
+	align-items: center;
+}
+.home-buttons {
+	margin-top: 20px;
+	width: 100%;
+	text-align: center;
+}
+.home-buttons a:hover {
+	box-shadow: 3px 4px 8px #5889ba;
+	transition: 0.5s;
+}
+.btn {
+	background-color: #2c3e50;
+	color: white;
+	padding: 10px 15px;
+	text-decoration: none;
+	border-radius: 5px;
+	margin-right: 10px;
+	display: inline-block;
+	font-weight: 700;
+}
+.btn:hover {
+	background-color: #1a252f;
+	color: #5889ba;
+	transition: 0.5s;
+}
