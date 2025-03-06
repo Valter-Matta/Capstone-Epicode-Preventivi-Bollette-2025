@@ -1,7 +1,9 @@
 package it.epicode.preventivi.bolletta;
 
 
+import it.epicode.preventivi.preventivo.PreventivoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,35 +11,25 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping ("/bollette")
+@RequestMapping ("/api/bollette")
 @RequiredArgsConstructor
 public class BollettaController {
-	private final BolletteService BolletteService;
+	private final BollettaService bollettaService;
+	private final PreventivoService preventivoService;
+
 
 	@GetMapping
-	public ResponseEntity<List<BolletteResponse>> findAll () {
-		return ResponseEntity.ok(BolletteService.findAll());
-	}
-
-	@GetMapping ("/{id}")
-	public ResponseEntity<BolletteResponse> findById (@PathVariable Long id) {
-		return ResponseEntity.ok(BolletteService.findById(id));
+	public List<Bolletta> findAll() {
+		return bollettaService.findAll();
 	}
 
 	@PostMapping
-	public ResponseEntity<BolletteResponse> save (@RequestBody BolletteRequest request) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(BolletteService.save(request));
+	@ResponseStatus(HttpStatus.CREATED)
+	public Bolletta salvaBolletta(@RequestBody BollettaRequest bolletta) {
+		Bolletta entity = new Bolletta();
+		BeanUtils.copyProperties(bolletta, entity);
+		return bollettaService.salva(entity);
 	}
 
-	@PutMapping ("/{id}")
-	public ResponseEntity<BolletteResponse> update (@PathVariable Long id, @RequestBody BolletteRequest request) {
-		return ResponseEntity.ok(BolletteService.update(id, request));
-	}
-
-	@DeleteMapping ("/{id}")
-	public ResponseEntity<Void> delete (@PathVariable Long id) {
-		BolletteService.delete(id);
-		return ResponseEntity.noContent().build();
-	}
 
 }

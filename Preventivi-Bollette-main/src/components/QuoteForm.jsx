@@ -1,9 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../css-components/QuoteForm.css";
+import { useSelector } from "react-redux";
+import SpreadResultCard from "./SpreadResultCard"; // Importiamo il nuovo componente
+import { useNavigate } from "react-router-dom";
 
 export default function QuoteForm() {
+	const token = useSelector(state => state.user);
+	const navigate = useNavigate();
 	const [quoteType, setQuoteType] = useState(null);
 	const [formData, setFormData] = useState({});
+	const [spread, setSpread] = useState(null);
+	const [showResult, setShowResult] = useState(false); // Stato per gestire la visualizzazione del risultato
+
+	// Se l'utente non è autenticato, viene reindirizzato alla pagina di login
+	useEffect(() => {
+		if (!token) {
+			navigate("/login");
+		}
+	}, [token, navigate]);
 
 	const handleChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -13,52 +27,40 @@ export default function QuoteForm() {
 		setFormData({ ...formData, [e.target.name]: e.target.files[0] });
 	};
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async e => {
 		e.preventDefault();
-		const formDataToSend = new FormData();
-  
-		// Aggiunta del file se presente
-		if (formData.bolletta) {
-			 formDataToSend.append("file", formData.bolletta);
-		} else {
-			 // Aggiunta dei dati manuali con formato (mese e anno)
-			 formDataToSend.append("data_inizio", formData.data_inizio || '');
-			 formDataToSend.append("data_fine", formData.data_fine || '');
-			 formDataToSend.append("tipo", quoteType); // Energia o Gas
-			 formDataToSend.append("consumo", formData.consumo ? parseFloat(formData.consumo) : 0);
-			 formDataToSend.append("consumo_smc", formData.consumo_smc ? parseFloat(formData.consumo_smc) : 0);
-			 formDataToSend.append("potenza", formData.potenza ? parseFloat(formData.potenza) : 0);
-		}
-  
+
 		try {
-			 const response = await fetch("http://localhost:8080/api/quote", {
-				  method: "POST",
-				  body: formDataToSend,
-			 });
-  
-			 if (!response.ok) {
-				  const errorData = await response.json();
-				  throw new Error(errorData.message || "Errore nell'invio della richiesta");
-			 }
-  
-			 const result = await response.json();
-			 console.log("Risultato:", result);
-			 alert("Dati inviati con successo!");
-  
-			 // Resetta il form
-			 setFormData({
-				  bolletta: null,
-				  data_inizio: "",
-				  data_fine: "",
-				  consumo: "",
-				  consumo_smc: "",
-				  potenza: "",
-			 });
+			const response = await fetch(
+				"http://localhost:8080/api/preventivi/calcola",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: JSON.stringify({
+						tipo: quoteType,
+						spesaMateriaCliente: formData.spesaMateria,
+						consumo: formData.consumo,
+						mese: new Date(formData.data_fine),
+						anno: new Date(formData.data_fine).getFullYear(),
+					}),
+				},
+			);
+
+			if (!response.ok) {
+				throw new Error("Errore durante il calcolo dello spread");
+			}
+
+			const result = await response.json();
+			setSpread(result.spread); // Memorizziamo lo spread
+			setShowResult(true); // Mostriamo il risultato
 		} catch (error) {
-			 console.error("Errore:", error);
-			 alert(`Errore durante l'invio dei dati: ${error.message}`);
+			console.error(error);
+			alert(`Errore durante il calcolo dello spread: ${error.message}`);
 		}
-  };
+	};
 
 	const renderForm = () => {
 		if (!quoteType) return null;
@@ -162,12 +164,7 @@ export default function QuoteForm() {
 
 						<div className="form-group">
 							<label>Carica la bolletta</label>
-							<input
-								required
-								name="bolletta"
-								type="file"
-								onChange={handleFileChange}
-							/>
+							<input name="bolletta" type="file" onChange={handleFileChange} />
 						</div>
 						<button type="submit">Invia</button>
 					</form>
@@ -205,11 +202,12 @@ export default function QuoteForm() {
 			<p className="attention">
 				Inserendo manualmente le 3 voci richieste nella foto saremo in grado di
 				decretare se il tuo fornitore ti sta vendendo{" "}
-				{quoteType === "energia" && "l'energia"}c ad un prezzo onesto.
+				{quoteType === "energia" && "l'energia"} ad un prezzo onesto.
 				Calcoleremo il costo della materia prima in base al prezzo di mercato (
-				{quoteType === "energia" && "PSV"}
-				{quoteType === "gas" && "PUN"}), e lo compareremo con il costo
-				addebitato. ②
+				{quoteType === "energia" && "PSV "}
+				{quoteType === "gas" && "PUN "} rif. mese/anno), e lo compareremo con il
+				costo addebitato.
+				{quoteType === "energia" || quoteType === "gas" ? "②" : ""}
 			</p>
 			<select onChange={e => setQuoteType(e.target.value)}>
 				<option value="">Seleziona il tipo di bolletta</option>
@@ -217,6 +215,14 @@ export default function QuoteForm() {
 				<option value="gas">Preventivo Gas</option>
 			</select>
 			{renderForm()}
+
+			{/* Se lo spread è calcolato, mostriamo la scheda dei risultati */}
+			{showResult && (
+				<SpreadResultCard
+					spread={spread}
+					onShowOffers={() => alert("Mostrando offerte vantaggiose...")}
+				/>
+			)}
 		</div>
 	);
 }

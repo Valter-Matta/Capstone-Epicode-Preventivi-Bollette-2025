@@ -1,0 +1,23 @@
+.spread-result-card {
+	border: 2px solid #4caf50;
+	padding: 20px;
+	background-color: #f9f9f9;
+	border-radius: 8px;
+	margin-top: 20px;
+}
+
+.spread-result-card h3 {
+	color: #4caf50;
+}
+
+.spread-result-card button {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	cursor: pointer;
+}
+
+.spread-result-card button:hover {
+	background-color: #45a049;
+}

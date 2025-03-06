@@ -1,4 +1,4 @@
-.container-login {
+.register-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -7,7 +7,7 @@
 	background-color: #f4f4f4;
 }
 
-.card-login {
+.register-card {
 	background: white;
 	padding: 20px;
 	border-radius: 8px;
@@ -16,12 +16,12 @@
 	max-width: 400px;
 }
 
-.card-header h2 {
+.register-card h2 {
 	margin: 0 0 15px;
 	text-align: center;
 }
 
-.card-content .form {
+.register-content .form {
 	display: flex;
 	flex-direction: column;
 	gap: 10px;
@@ -31,6 +31,7 @@
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
+	width: 100%;
 }
 
 .button {
@@ -40,6 +41,7 @@
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
+	font-size: 16px;
 }
 
 .button:hover {
@@ -57,13 +59,20 @@
 	color: #007bff;
 	cursor: pointer;
 	text-decoration: underline;
+	font-size: 14px;
 }
 
 .link:hover {
 	color: #0056b3;
 }
 
-.register-link {
+.login-link {
 	color: #0056b3;
 	border-bottom: 2px solid #0056b3;
+	cursor: pointer;
+}
+
+p {
+	font-size: 1.1rem;
+	color: #333;
 }

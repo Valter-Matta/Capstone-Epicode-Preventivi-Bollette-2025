@@ -38,7 +38,6 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
         String username = null;
-        String email=null;
         String jwtToken = null;
 
         // Estrae il token JWT dal header Authorization

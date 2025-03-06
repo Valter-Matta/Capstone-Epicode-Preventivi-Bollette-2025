@@ -23,7 +23,6 @@ public class AuthController {
                 registerRequest.getCognome(),
                 registerRequest.getEmail(),
                 registerRequest.getPassword(),
-                registerRequest.getConfermaPwd(),
                 Set.of(Role.ROLE_USER) // Assegna il ruolo di default
         );
         return ResponseEntity.ok("Registrazione avvenuta con successo");

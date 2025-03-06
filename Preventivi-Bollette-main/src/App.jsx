@@ -3,11 +3,12 @@ import { Provider } from "react-redux";
 import "./App.css";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import Register from "./components/Register";
+
 import QuoteForm from "./components/QuoteForm";
 import store from "./redux/store";
 import "boxicons";
 import NavBar from "./components/NavBar";
+import Register from "./components/Register";
 
 function App() {
 	return (

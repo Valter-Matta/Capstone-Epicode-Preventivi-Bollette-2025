@@ -32,6 +32,10 @@ public class AppUser implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    private String nome;
+    private String cognome;
+    private String email;
+
     private  boolean accountNonExpired=true;
     private  boolean accountNonLocked=true;
     private  boolean credentialsNonExpired=true;

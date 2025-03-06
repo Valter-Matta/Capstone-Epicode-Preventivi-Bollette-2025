@@ -1,5 +1,7 @@
 package it.epicode.preventivi.bolletta;
 
+import it.epicode.preventivi.auth.AppUser;
+import it.epicode.preventivi.preventivo.Preventivo;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +25,10 @@ public class Bolletta {
 	private double importoTotale;
 	private double spesaMateria;
 	private int consumo; //kwH o Smc
-	private LocalDate periodoFatturazione;
+	private LocalDate dataInizioFatturazione;
+	private LocalDate dataFineFatturazione;
+	@OneToOne
+	private Preventivo preventivo;
 
 
 }
