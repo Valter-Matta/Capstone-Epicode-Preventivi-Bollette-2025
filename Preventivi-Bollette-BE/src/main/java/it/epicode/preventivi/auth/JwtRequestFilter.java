@@ -45,7 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
             try {
-                username = jwtTokenUtil.getUsernameFromToken(jwtToken);
+                email = jwtTokenUtil.getEmailFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
                 System.out.println("Impossibile ottenere il token JWT");
             } catch (ExpiredJwtException e) {
@@ -59,8 +59,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         }
 
         // Valida il token e configura l'autenticazione nel contesto di sicurezza
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(username);
+        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.customUserDetailsService.loadUserByUsername(email);
 
             if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(

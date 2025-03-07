@@ -22,7 +22,16 @@ function Register() {
 			return;
 		}
 
-		const userData = { name, surname, phone, email, password };
+		const userData = {
+			nome: name,
+			cognome: surname,
+			phone,
+			email,
+			password,
+			confermaPwd: confirmPassword,
+		};
+		console.log(userData);
+
 		await dispatch(registerUser(userData));
 		navigate("/login");
 	};

@@ -15,8 +15,8 @@ public class PreventivoController {
 	private final PreventivoService preventivoService;
 
 
-	@PostMapping
-	public ResponseEntity<Double> calcolaPreventivo (@RequestBody Map<String, String> params) {
+	@PostMapping("/calcola")
+	public ResponseEntity<Double> calcolaSpread(@RequestBody Map<String, String> params) {
 		String tipo = params.get("tipo");
 		double spesaMateriaCliente = Double.parseDouble(params.get("spesaMateriaCliente"));
 		int consumo = Integer.parseInt(params.get("consumo"));

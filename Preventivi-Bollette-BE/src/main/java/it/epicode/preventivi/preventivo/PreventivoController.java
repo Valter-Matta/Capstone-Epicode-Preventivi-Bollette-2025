@@ -16,14 +16,20 @@ public class PreventivoController {
 
 
 	@PostMapping("/calcola")
-	public ResponseEntity<Double> calcolaSpread(@RequestBody Map<String, String> params) {
-		String tipo = params.get("tipo");
-		double spesaMateriaCliente = Double.parseDouble(params.get("spesaMateriaCliente"));
-		int consumo = Integer.parseInt(params.get("consumo"));
-		int mese = Integer.parseInt(params.get("mese"));
-		int anno = Integer.parseInt(params.get("anno"));
+	public ResponseEntity<Double> calcolaSpread(@RequestBody PreventivoRequest request) {
+		// Estrarre mese e anno dal formato "YYYY-MM"
+		String[] dateParts = request.getMeseAnno().split("-");
+		int anno = Integer.parseInt(dateParts[0]);
+		int mese = Integer.parseInt(dateParts[1]);
 
-		double spread = preventivoService.calcolaSpread(tipo, spesaMateriaCliente, consumo, mese, anno);
+		double spread = preventivoService.calcolaSpread(
+			request.getTipo(),
+			request.getSpesaMateriaCliente(),
+			request.getConsumo(),
+			mese,
+			anno
+		);
+
 		return ResponseEntity.ok(spread);
 	}
 

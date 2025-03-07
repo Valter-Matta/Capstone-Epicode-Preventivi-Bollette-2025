@@ -63,11 +63,6 @@ public class AppUser implements UserDetails {
         this.accountNonLocked = accountNonLocked;
    }
 
-    @Override
-    public String getUsername() {
-        return email; // Imposta l'email come "username"
-    }
-
 
 
 }

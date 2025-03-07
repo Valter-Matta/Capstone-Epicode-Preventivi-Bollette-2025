@@ -5,7 +5,7 @@ import SpreadResultCard from "./SpreadResultCard"; // Importiamo il nuovo compon
 import { useNavigate } from "react-router-dom";
 
 export default function QuoteForm() {
-	const token = useSelector(state => state.user);
+	const token = useSelector(state => state.user.token);
 	const navigate = useNavigate();
 	const [quoteType, setQuoteType] = useState(null);
 	const [formData, setFormData] = useState({});
@@ -41,10 +41,9 @@ export default function QuoteForm() {
 					},
 					body: JSON.stringify({
 						tipo: quoteType,
-						spesaMateriaCliente: formData.spesaMateria,
-						consumo: formData.consumo,
-						mese: new Date(formData.data_fine),
-						anno: new Date(formData.data_fine).getFullYear(),
+						spesaMateriaCliente: parseFloat(formData.spesaMateria),
+						consumo: parseInt(formData.consumo),
+						meseAnno: formData.data_fine,
 					}),
 				},
 			);

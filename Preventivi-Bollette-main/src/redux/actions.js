@@ -44,8 +44,18 @@ export const loginUser = (email, password) => {
 			}
 
 			const data = await response.json();
+			console.log(data);
+
 			const token = data.token;
 
+			dispatch({
+				type: REGISTER_USER,
+				payload: {
+					cognome: data.cognome,
+					nome: data.nome,
+					email: data.email,
+				},
+			});
 			dispatch({ type: LOGIN_SUCCESS, payload: token });
 		} catch (error) {
 			console.error("Errore durante il login:", error);

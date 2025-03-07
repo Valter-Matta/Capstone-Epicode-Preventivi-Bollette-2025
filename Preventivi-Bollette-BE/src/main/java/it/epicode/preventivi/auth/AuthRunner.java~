@@ -19,7 +19,7 @@ public class AuthRunner implements ApplicationRunner {
 	private PasswordEncoder passwordEncoder;
 
 	@Override
-	public void run (ApplicationArguments args) throws Exception {
+	public void run(ApplicationArguments args) throws Exception {
 		// Creazione dell'utente admin se non esiste
 		Optional<AppUser> adminUser = appUserService.findByEmail("admin@email.it");
 		if (adminUser.isEmpty()) {
@@ -28,5 +28,5 @@ public class AuthRunner implements ApplicationRunner {
 	}
 
 
-}
+	}
 

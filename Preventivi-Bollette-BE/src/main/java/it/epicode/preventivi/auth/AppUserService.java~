@@ -37,8 +37,9 @@ public class AppUserService {
 		AppUser appUser = new AppUser();
 		appUser.setNome(nome);
 		appUser.setCognome(cognome);
+		appUser.
 		appUser.setEmail(email);
-		appUser.setUsername(email);
+		appUser.setUsername(nome);
 		if (Objects.equals(password, confermaPwd)) {
 			appUser.setPassword(passwordEncoder.encode(password));
 		} else {

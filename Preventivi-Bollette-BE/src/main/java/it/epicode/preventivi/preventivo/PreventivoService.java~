@@ -26,7 +26,7 @@ public class PreventivoService {
 	private final SpreadGasRepository spreadGasRepository;
 	private final SpreadEnergiaRepository spreadEnergiaRepository;
 
-	public double calcolaSpread (String tipo, double spesaMateriaCliente, int consumo, int mese, int anno) {
+	public double calcolaSpread(String tipo, double spesaMateriaCliente, int consumo, int mese, int anno) {
 		double prezzoMercato = 0.0;
 
 		if ("gas".equalsIgnoreCase(tipo)) {

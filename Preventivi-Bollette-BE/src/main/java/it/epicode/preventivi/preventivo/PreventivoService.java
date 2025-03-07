@@ -43,7 +43,7 @@ public class PreventivoService {
 
 		// Calcolo dello spread applicato
 		double prezzoUnitarioCliente = spesaMateriaCliente / consumo;
-		double spreadEffettivo = ((prezzoUnitarioCliente - prezzoMercato) / prezzoMercato) * 100;
+		double spreadEffettivo = ((prezzoUnitarioCliente - prezzoMercato) / prezzoMercato);
 
 		return spreadEffettivo;
 	}

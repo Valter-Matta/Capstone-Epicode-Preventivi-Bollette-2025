@@ -28,6 +28,10 @@ public class JwtTokenUtil {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
+    public String getEmailFromToken(String token) {
+        return getClaimFromToken(token, Claims::getSubject); // Assumendo che nel JWT subject sia l'email
+    }
+
     // Estrae la data di scadenza dal token JWT
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
@@ -57,16 +61,16 @@ public class JwtTokenUtil {
     public String generateToken(UserDetails userDetails) {
         Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
         List<String> roles = authorities.stream()
-                                        .map(GrantedAuthority::getAuthority)
-                                        .collect(Collectors.toList());
+           .map(GrantedAuthority::getAuthority)
+           .collect(Collectors.toList());
 
         return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .claim("roles", roles) // Aggiunge i ruoli come claim
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
-                .signWith(SignatureAlgorithm.HS256, secret)
-                .compact();
+           .setSubject(userDetails.getUsername())
+           .claim("roles", roles)
+           .setIssuedAt(new Date(System.currentTimeMillis()))
+           .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationInMs))
+           .signWith(SignatureAlgorithm.HS256, secret)
+           .compact();
     }
 
     // Estrae i ruoli dal token JWT
@@ -77,7 +81,7 @@ public class JwtTokenUtil {
 
     // Valida il token JWT
     public Boolean validateToken(String token, UserDetails userDetails) {
-        final String username = getUsernameFromToken(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+        final String email = getEmailFromToken(token);
+        return (email.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 }
