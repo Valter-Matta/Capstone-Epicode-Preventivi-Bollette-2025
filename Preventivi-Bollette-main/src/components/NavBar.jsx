@@ -46,7 +46,7 @@ function NavBar() {
 					Prova
 				</NavLink>
 
-				{token ? (
+				{token && user ? (
 					<div className="user-avatar" onClick={() => setShowModal(!showModal)}>
 						<img
 							src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.nome}&backgroundColor=19c2ba`}

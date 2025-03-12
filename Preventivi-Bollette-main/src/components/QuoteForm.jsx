@@ -1,30 +1,33 @@
 import { useEffect, useState } from "react";
 import "../css-components/QuoteForm.css";
 import { useSelector } from "react-redux";
-import SpreadResultCard from "./SpreadResultCard"; // Importiamo il nuovo componente
+import SpreadResultCard from "./SpreadResultCard";
 import { useNavigate } from "react-router-dom";
+import BillResultCard from "./BillResultsPAge";
 
 export default function QuoteForm() {
 	const token = useSelector(state => state.user.token);
+	const user = useSelector(state => state.user.user);
 	const navigate = useNavigate();
 	const [quoteType, setQuoteType] = useState(null);
 	const [formData, setFormData] = useState({});
 	const [spread, setSpread] = useState(null);
 	const [showResult, setShowResult] = useState(false); // Stato per gestire la visualizzazione del risultato
+	const [billData, setBillData] = useState(null); // Stato per i dati estratti
 
 	// Se l'utente non è autenticato, viene reindirizzato alla pagina di login
 	useEffect(() => {
 		if (!token) {
 			navigate("/login");
 		}
-	}, [token, navigate]);
+	}, [navigate, user]);
 
 	const handleChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
 	const handleFileChange = e => {
-		setFormData({ ...formData, [e.target.name]: e.target.files[0] });
+		setFormData({ ...formData, bolletta: e.target.files[0] });
 	};
 
 	const handleSubmit = async e => {
@@ -58,6 +61,43 @@ export default function QuoteForm() {
 		} catch (error) {
 			console.error(error);
 			alert(`Errore durante il calcolo dello spread: ${error.message}`);
+		}
+	};
+
+	// Invia il file della bolletta al backend
+	const handleFileUpload = async e => {
+		e.preventDefault();
+		const file = formData.bolletta;
+
+		if (!file) {
+			alert("Seleziona un file prima di inviare.");
+			return;
+		}
+
+		const formDataObj = new FormData();
+		formDataObj.append("file", file);
+
+		try {
+			const response = await fetch("http://localhost:8080/ocr/extract", {
+				method: "POST",
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+				body: formDataObj,
+			});
+
+			if (!response.ok) {
+				throw new Error("Errore durante l'elaborazione della bolletta");
+			}
+
+			const result = await response.json();
+			console.log("📥 Dati ricevuti dal backend:", result); // Debugging
+
+			// Naviga alla nuova pagina passando i dati della bolletta
+			navigate("/risultati-bolletta", { state: { billData: result } });
+		} catch (error) {
+			console.error(error);
+			alert(`Errore durante l'elaborazione della bolletta: ${error.message}`);
 		}
 	};
 
@@ -158,7 +198,8 @@ export default function QuoteForm() {
 							</div>
 						)}
 						<button type="submit">Calcola</button>
-
+					</form>
+					<form onSubmit={handleFileUpload}>
 						<p className="attention">Oppure</p>
 
 						<div className="form-group">
@@ -214,14 +255,6 @@ export default function QuoteForm() {
 				<option value="gas">Preventivo Gas</option>
 			</select>
 			{renderForm()}
-
-			{/* Se lo spread è calcolato, mostriamo la scheda dei risultati */}
-			{showResult && (
-				<SpreadResultCard
-					spread={spread}
-					onShowOffers={() => alert("Mostrando offerte vantaggiose...")}
-				/>
-			)}
 		</div>
 	);
 }

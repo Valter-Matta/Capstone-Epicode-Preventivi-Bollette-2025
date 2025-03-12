@@ -1,0 +1,25 @@
+package it.epicode.preventivi.offerte;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/offerte")
+@RequiredArgsConstructor
+public class OffertaController {
+
+	private final OffertaService offertaService;
+
+	@GetMapping("/energia")
+	public ResponseEntity<List<OffertaEnergia>> getOfferteEnergia() {
+		return ResponseEntity.ok(offertaService.getOfferteEnergia());
+	}
+
+	@GetMapping("/gas")
+	public ResponseEntity<List<OffertaGas>> getOfferteGas() {
+		return ResponseEntity.ok(offertaService.getOfferteGas());
+	}
+}

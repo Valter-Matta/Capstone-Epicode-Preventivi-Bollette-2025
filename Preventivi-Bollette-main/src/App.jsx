@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Login from "./components/Login";
 
 import QuoteForm from "./components/QuoteForm";
+import BillResultsPage from "./components/BillResultsPAge";
 import store from "./redux/store";
 import "boxicons";
 import NavBar from "./components/NavBar";
@@ -21,6 +22,7 @@ function App() {
 						<Route path="/login" element={<Login />} />
 						<Route path="/register" element={<Register />} />
 						<Route path="/upload-bill" element={<QuoteForm />} />
+						<Route path="/risultati-bolletta" element={<BillResultsPage />} />
 					</Routes>
 				</div>
 			</BrowserRouter>
