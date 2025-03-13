@@ -1,18 +1,24 @@
 import { NavLink } from "react-router-dom";
-import "../css-components/NavBar.css";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/actions";
 import { useState } from "react";
+import "../css-components/NavBar.css";
 
 function NavBar() {
 	const dispatch = useDispatch();
 	const token = useSelector(state => state.user.token);
 	const user = useSelector(state => state.user.user);
 	const [showModal, setShowModal] = useState(false);
+	const [menuOpen, setMenuOpen] = useState(false); // Stato per il menu hamburger
 
 	const handleLogout = () => {
 		dispatch(logoutUser());
 		setShowModal(false);
+		setMenuOpen(false);
+	};
+
+	const toggleMenu = () => {
+		setMenuOpen(!menuOpen);
 	};
 
 	return (
@@ -27,22 +33,25 @@ function NavBar() {
 				Consulenza Energetica
 			</div>
 
-			<div className="navbar-links">
-				<NavLink
-					className={({ isActive }) => (isActive ? "active" : "")}
-					to="/"
-				>
+			{/* Menu Hamburger */}
+			<div className="hamburger" onClick={toggleMenu}>
+				<div className={`bar ${menuOpen ? "open" : ""}`}></div>
+				<div className={`bar ${menuOpen ? "open" : ""}`}></div>
+				<div className={`bar ${menuOpen ? "open" : ""}`}></div>
+			</div>
+
+			<div className={`navbar-links ${menuOpen ? "active" : ""}`}>
+				<NavLink onClick={() => setMenuOpen(false)} to="/">
 					Home
 				</NavLink>
-
-				<NavLink
-					className={({ isActive }) => (isActive ? "active" : "")}
-					to="/contatti"
-				>
+				<NavLink onClick={() => setMenuOpen(false)} to="/contatti">
 					Contatti
 				</NavLink>
-
-				<NavLink className="nav-btn-2" to="/upload-bill">
+				<NavLink
+					onClick={() => setMenuOpen(false)}
+					className="nav-btn-2"
+					to="/upload-bill"
+				>
 					Prova
 				</NavLink>
 
@@ -66,7 +75,11 @@ function NavBar() {
 						)}
 					</div>
 				) : (
-					<NavLink className="nav-btn-1" to="/login">
+					<NavLink
+						onClick={() => setMenuOpen(false)}
+						className="nav-btn-1"
+						to="/login"
+					>
 						Accedi
 					</NavLink>
 				)}

@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
-import "./App.css";
+
 import Home from "./components/Home";
 import Login from "./components/Login";
 
@@ -15,16 +15,14 @@ function App() {
 	return (
 		<Provider store={store}>
 			<BrowserRouter>
-				<div className="app-container">
-					<NavBar />
-					<Routes>
-						<Route path="/" element={<Home />} />
-						<Route path="/login" element={<Login />} />
-						<Route path="/register" element={<Register />} />
-						<Route path="/upload-bill" element={<QuoteForm />} />
-						<Route path="/risultati-bolletta" element={<BillResultsPage />} />
-					</Routes>
-				</div>
+				<NavBar />
+				<Routes>
+					<Route path="/" element={<Home />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/upload-bill" element={<QuoteForm />} />
+					<Route path="/risultati-bolletta" element={<BillResultsPage />} />
+				</Routes>
 			</BrowserRouter>
 		</Provider>
 	);

@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import "../css-components/QuoteForm.css";
 import { useSelector } from "react-redux";
-import SpreadResultCard from "./SpreadResultCard";
-import { useNavigate } from "react-router-dom";
-import BillResultCard from "./BillResultsPAge";
 
 export default function QuoteForm() {
 	const token = useSelector(state => state.user.token);
@@ -11,9 +8,6 @@ export default function QuoteForm() {
 	const navigate = useNavigate();
 	const [quoteType, setQuoteType] = useState(null);
 	const [formData, setFormData] = useState({});
-	const [spread, setSpread] = useState(null);
-	const [showResult, setShowResult] = useState(false); // Stato per gestire la visualizzazione del risultato
-	const [billData, setBillData] = useState(null); // Stato per i dati estratti
 
 	// Se l'utente non è autenticato, viene reindirizzato alla pagina di login
 	useEffect(() => {

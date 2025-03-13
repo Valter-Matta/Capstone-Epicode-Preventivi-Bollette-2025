@@ -29,7 +29,7 @@ public class OffertaRunner implements ApplicationRunner {
 			List<OffertaGas> offerteGas = List.of(
 				new OffertaGas(null, "Gas Domestico", "Tariffa fissa 24 mesi", 0.75, "Eni", "https://www.rundesign.it/wp-content/uploads/2022/04/logo_eni_2022.jpg"),
 				new OffertaGas(null, "Gas Risparmio", "Prezzo indicizzato al PSV", 0.69, "Hera", "https://res.cloudinary.com/dlhhugvi8/f_auto,q_auto,w_650/facile.it/logos/fornitori-energia/hera_wt2ii6.png?v=1711381692729"),
-				new OffertaGas(null, "Gas Business", "Offerta dedicata alle aziende", 0.80, "A2A", "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/A2A_%28Unternehmen%29.svg/800px-A2A_%28Unternehmen%29.svg.png")
+				new OffertaGas(null, "Gas Business", "Offerta dedicata alle aziende", 0.80, "A2A", "https://example.com/a2a-logo.png")
 			);
 			offertaGasRepository.saveAll(offerteGas);
 			System.out.println("✅ Offerte Gas inserite nel database!");
