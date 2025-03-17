@@ -56,14 +56,23 @@ function NavBar() {
 				</NavLink>
 
 				{token && user ? (
-					<div className="user-avatar" onClick={() => setShowModal(!showModal)}>
+					<div
+						className="user-avatar"
+						onClick={e => {
+							e.stopPropagation();
+							setShowModal(prev => !prev);
+						}}
+					>
 						<img
 							src={`https://api.dicebear.com/7.x/initials/svg?seed=${user.nome}&backgroundColor=19c2ba`}
 							alt="avatar"
 						/>
 						<span>Ciao, {user.nome}</span>
 						{showModal && (
-							<div className="modal">
+							<div
+								className={`modal ${showModal ? "show" : ""}`}
+								onClick={e => e.stopPropagation()}
+							>
 								<h4>
 									{user.nome} {user.cognome}
 								</h4>

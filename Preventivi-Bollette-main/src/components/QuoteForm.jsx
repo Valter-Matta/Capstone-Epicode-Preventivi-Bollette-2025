@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../css-components/QuoteForm.css";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function QuoteForm() {
 	const token = useSelector(state => state.user.token);
@@ -14,7 +15,7 @@ export default function QuoteForm() {
 		if (!token) {
 			navigate("/login");
 		}
-	}, [navigate, user]);
+	}, [navigate, user, token]);
 
 	const handleChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -27,6 +28,16 @@ export default function QuoteForm() {
 	const handleSubmit = async e => {
 		e.preventDefault();
 
+		const requestData = {
+			tipo: quoteType,
+			spesaMateriaCliente: parseFloat(formData.spesaMateria) || 0,
+			consumo:
+				quoteType === "gas"
+					? parseInt(formData.consumo_smc) || 0
+					: parseInt(formData.consumo_kwh) || 0,
+			meseAnno: formData.data_fine,
+		};
+
 		try {
 			const response = await fetch(
 				"http://localhost:8080/api/preventivi/calcola",
@@ -36,12 +47,7 @@ export default function QuoteForm() {
 						"Content-Type": "application/json",
 						Authorization: `Bearer ${token}`,
 					},
-					body: JSON.stringify({
-						tipo: quoteType,
-						spesaMateriaCliente: parseFloat(formData.spesaMateria),
-						consumo: parseInt(formData.consumo),
-						meseAnno: formData.data_fine,
-					}),
+					body: JSON.stringify(requestData),
 				},
 			);
 
@@ -50,8 +56,15 @@ export default function QuoteForm() {
 			}
 
 			const result = await response.json();
-			setSpread(result.spread); // Memorizziamo lo spread
-			setShowResult(true); // Mostriamo il risultato
+			console.log(result);
+
+			navigate("/risultati-spread", {
+				state: {
+					spread: result.spread,
+					prezzoMercato: result.prezzoMercato,
+					tipoBolletta: quoteType,
+				},
+			});
 		} catch (error) {
 			console.error(error);
 			alert(`Errore durante il calcolo dello spread: ${error.message}`);
@@ -85,7 +98,7 @@ export default function QuoteForm() {
 			}
 
 			const result = await response.json();
-			console.log("📥 Dati ricevuti dal backend:", result); // Debugging
+			console.log("Dati ricevuti dal backend:", result); // Debugging
 
 			// Naviga alla nuova pagina passando i dati della bolletta
 			navigate("/risultati-bolletta", { state: { billData: result } });
@@ -145,7 +158,7 @@ export default function QuoteForm() {
 								</label>
 								<input
 									required
-									name="consumo"
+									name="spesaMateria"
 									type="number"
 									onChange={handleChange}
 								/>
@@ -158,7 +171,7 @@ export default function QuoteForm() {
 								</label>
 								<input
 									required
-									name="consumo"
+									name="spesaMateria"
 									type="number"
 									onChange={handleChange}
 								/>
@@ -181,11 +194,11 @@ export default function QuoteForm() {
 						{quoteType === "energia" && (
 							<div className="form-group">
 								<label>
-									Potenza impegnata (kW/h) <span>③</span>{" "}
+									Consumo in kWh <span>③</span>
 								</label>
 								<input
 									required
-									name="potenza"
+									name="consumo_kwh"
 									type="number"
 									onChange={handleChange}
 								/>

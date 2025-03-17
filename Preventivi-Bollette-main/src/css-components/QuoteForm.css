@@ -1,98 +1,127 @@
-.container-prev {
-	width: 100%;
-	max-width: 85%;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
 
-	background: white;
-	margin-top: 1rem;
-	padding: 4rem 2rem;
-	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.container-prev {
+	max-width: 1200px;
+	min-height: 88.7vh;
+	margin: auto;
+	padding: 20px;
+	background: linear-gradient(135deg, #19c2ba, #007bff);
+	border-radius: 20px;
+	box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+	text-align: center;
+	padding-top: 100px;
+}
+
+h1 {
+	font-size: 2rem;
+	color: #fff;
+	text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 p {
-	text-align: center;
+	color: #fff;
+	font-size: 1.1rem;
+	margin-bottom: 15px;
 }
-span {
+
+p.attention {
 	font-weight: bold;
-	color: red;
+	background: rgba(255, 255, 255, 0.1);
+	padding: 10px;
+	border-radius: 10px;
 }
-.attention {
-	font-weight: 600;
-	font-size: 1.2rem;
-	color: rgb(0, 0, 0);
+
+select {
+	width: 80%;
+	padding: 12px;
+	border: none;
+	border-radius: 10px;
+	font-size: 1rem;
+	background: #ecf0f1;
+	color: #333;
+	cursor: pointer;
+	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+}
+
+select:hover {
+	transform: scale(1.05);
 }
 
 .card {
 	display: flex;
 	justify-content: space-between;
-	margin-top: 2rem;
+	align-items: center;
+	margin-top: 20px;
+	padding: 20px;
+	background: #ecf0f1;
+	border-radius: 15px;
+	box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.15);
 }
 
-.date-range {
+.card-content h2 {
+	font-size: 1.8rem;
+	color: #2c3e50;
+}
+
+.form-group {
 	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	flex-direction: column;
+	text-align: left;
+	margin: 15px 0;
+}
+.form-group input {
+	padding: 5px;
+}
+
+label {
+	font-weight: bold;
+	color: #2c3e50;
+	margin-bottom: 5px;
 }
 
 .input-data {
-	width: 45%;
-}
-
-h1 {
-	font-size: 1.5rem;
-	text-align: center;
-	color: #333;
-}
-
-h2 {
-	margin: 2rem 2rem 0.5rem 1rem;
-	font-size: 1.3rem;
-	text-align: center;
-	color: #333;
-}
-
-select {
-	width: 25%;
-	padding: 15px;
-	margin: 0 auto;
-	border: 2px solid #000000;
-	border-radius: 5px;
-	font-size: 1.2rem;
-}
-label {
-	display: inline-flex;
 	width: 100%;
-	justify-content: space-between;
-	align-items: center;
-	margin-top: 1rem;
+	padding: 12px;
+	border: 2px solid #bdc3c7;
+	border-radius: 10px;
+	font-size: 1rem;
+	transition: all 0.3s ease;
 }
-label span {
-	font-size: 1.5rem;
-	color: #333;
-}
-input {
-	width: 100%;
-	padding: 10px 0;
-	margin: 10px 0;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-	font-size: 16px;
+
+.input-data:focus {
+	border-color: #2980b9;
+	outline: none;
+	box-shadow: 0px 0px 10px rgba(41, 128, 185, 0.5);
 }
 
 button {
 	width: 100%;
-	background-color: #007bff;
-	color: white;
-	padding: 10px;
+	padding: 12px;
+	font-size: 1.1rem;
 	border: none;
-	border-radius: 5px;
-	font-size: 16px;
+	border-radius: 10px;
 	cursor: pointer;
+	background: linear-gradient(135deg, #1a252f, #2c3e50);
+	color: #fff;
+	font-weight: bold;
+	box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+	transition: all 0.3s ease;
 }
 
 button:hover {
-	background-color: #0056b3;
+	transform: scale(1.05);
+	background: linear-gradient(135deg, #1f3a52, #2c3e50);
+}
+
+@media (max-width: 600px) {
+	.container-prev {
+		padding: 15px;
+		margin-top: 100px; /* Aumenta il margine su schermi piccoli */
+	}
+
+	select,
+	button {
+		width: 100%;
+	}
 }

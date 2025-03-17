@@ -26,8 +26,12 @@ public class PreventivoService {
 	private final SpreadGasRepository spreadGasRepository;
 	private final SpreadEnergiaRepository spreadEnergiaRepository;
 
-	public double calcolaSpread(String tipo, double spesaMateriaCliente, int consumo, int mese, int anno) {
+	public PreventivoResponse calcolaSpread (String tipo, double spesaMateriaCliente, int consumo, int mese, int anno) {
 		double prezzoMercato = 0.0;
+		System.out.println("Calcolo spread per tipo: " + tipo);
+		System.out.println("Spesa Materia Cliente: " + spesaMateriaCliente);
+		System.out.println("Consumo: " + consumo);
+		System.out.println("Mese: " + mese + " Anno: " + anno);
 
 		if ("gas".equalsIgnoreCase(tipo)) {
 			prezzoMercato = spreadGasRepository.findByMonthAndYear(mese, anno)
@@ -41,11 +45,13 @@ public class PreventivoService {
 			throw new IllegalArgumentException("Tipo non valido. Usa 'gas' o 'energia'.");
 		}
 
-		// Calcolo dello spread applicato
 		double prezzoUnitarioCliente = spesaMateriaCliente / consumo;
-		double spreadEffettivo = ((prezzoUnitarioCliente - prezzoMercato) / prezzoMercato);
+		PreventivoResponse response = new PreventivoResponse();
+		response.setSpread(prezzoUnitarioCliente);
+		response.setPrezzoMercato(prezzoMercato);
 
-		return spreadEffettivo;
+
+		return response;
 	}
 
 	public ConfrontoPrezziResponse confrontaPrezzi (Long bollettaId) {

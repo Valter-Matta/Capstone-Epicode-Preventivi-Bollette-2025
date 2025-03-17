@@ -1,0 +1,68 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+#root {
+	height: 100vh;
+}
+
+.contact-container {
+	height: 100%;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 88.7%;
+	background: linear-gradient(135deg, #007bff, #19c2ba);
+	padding: 20px;
+	font-family: "Poppins", sans-serif;
+}
+
+.contact-card {
+	background: white;
+	padding: 30px;
+	border-radius: 12px;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+	width: 100%;
+	max-width: 500px;
+	text-align: center;
+}
+
+.contact-card h2 {
+	margin-bottom: 15px;
+	font-weight: 600;
+	color: #333;
+}
+
+.contact-card p {
+	color: #555;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+
+.contact-info p {
+	margin: 5px 0;
+}
+
+.contact-button {
+	background: #007bff;
+	color: white;
+	padding: 12px;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+	margin-top: 15px;
+}
+
+.contact-button:hover {
+	background: #0056b3;
+	transform: scale(1.05);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+	.contact-card {
+		padding: 20px;
+	}
+}

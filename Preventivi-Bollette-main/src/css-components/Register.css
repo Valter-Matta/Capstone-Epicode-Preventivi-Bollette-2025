@@ -1,78 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
 .register-container {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	min-height: 100vh;
-	min-width: 100vh;
-	background-color: #f4f4f4;
+	min-height: 88.7vh;
+	background: linear-gradient(135deg, #007bff, #19c2ba);
+	padding: 20px;
 }
 
 .register-card {
 	background: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	padding: 30px;
+	border-radius: 12px;
+	box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 	width: 100%;
 	max-width: 400px;
+	text-align: center;
+	font-family: "Poppins", sans-serif;
 }
 
 .register-card h2 {
-	margin: 0 0 15px;
-	text-align: center;
+	margin-bottom: 20px;
+	font-weight: 600;
+	color: #333;
 }
 
-.register-content .form {
+.register-card form {
 	display: flex;
 	flex-direction: column;
-	gap: 10px;
+	gap: 15px;
 }
 
-.input {
-	padding: 10px;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	width: 100%;
-}
-
-.button {
-	background-color: #007bff;
-	color: white;
-	padding: 10px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+.register-card input {
+	padding: 12px;
+	border: 2px solid #ddd;
+	border-radius: 8px;
 	font-size: 16px;
+	transition: all 0.3s ease;
 }
 
-.button:hover {
-	background-color: #0056b3;
+.register-card input:focus {
+	border-color: #19c2ba;
+	outline: none;
+	box-shadow: 0 0 8px rgba(25, 194, 186, 0.3);
 }
 
-.toggle {
-	margin-top: 15px;
-	text-align: center;
-}
-
-.link {
-	background: none;
+.register-card button {
+	background: #19c2ba;
+	color: white;
+	padding: 12px;
 	border: none;
-	color: #007bff;
+	border-radius: 8px;
 	cursor: pointer;
-	text-decoration: underline;
+	font-size: 18px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.register-card button:hover {
+	background: #149a91;
+	transform: scale(1.05);
+}
+
+.register-card p {
+	margin-top: 15px;
+	color: #555;
 	font-size: 14px;
 }
 
-.link:hover {
-	color: #0056b3;
-}
-
 .login-link {
-	color: #0056b3;
-	border-bottom: 2px solid #0056b3;
+	color: #19c2ba;
+	font-weight: 500;
 	cursor: pointer;
+	transition: all 0.3s ease;
 }
 
-p {
-	font-size: 1.1rem;
-	color: #333;
+.login-link:hover {
+	color: #149a91;
+	text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+	.register-card {
+		padding: 20px;
+	}
 }
