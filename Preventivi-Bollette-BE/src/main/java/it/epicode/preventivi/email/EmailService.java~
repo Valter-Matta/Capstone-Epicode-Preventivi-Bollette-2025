@@ -1,0 +1,45 @@
+package it.epicode.preventivi.email;
+
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+import jakarta.validation.Valid;
+
+import java.util.List;
+
+@Service
+@Validated
+@RequiredArgsConstructor
+public class EmailService {
+	private final EmailRepository repository;
+	private final EmailMapper mapper;
+
+	public List<EmailResponse> findAll () {
+		return mapper.toDto(repository.findAll());
+	}
+
+	public EmailResponse findById (Long id) {
+		return repository.findById(id)
+			.map(mapper::toDto)
+			.orElseThrow(() -> new EntityNotFoundException("Email not found with id " + id));
+	}
+
+	public EmailResponse save (@Valid EmailRequest request) {
+		Email Email = mapper.toEntity(request);
+		return mapper.toDto(repository.save(Email));
+	}
+
+	public EmailResponse update (Long id, @Valid EmailRequest request) {
+		Email entity = repository.findById(id)
+			.orElseThrow(() -> new EntityNotFoundException("Email not found with id " + id));
+		return mapper.toDto(repository.save(entity));
+	}
+
+	public void delete (Long id) {
+		if (!repository.existsById(id)) {
+			throw new EntityNotFoundException("Email not found with id " + id);
+		}
+		repository.deleteById(id);
+	}
+}

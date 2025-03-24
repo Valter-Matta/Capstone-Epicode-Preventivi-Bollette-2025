@@ -18,6 +18,7 @@ public class SpreadRunner implements CommandLineRunner {
 	@Order (1)
 	public void run (String... args) throws Exception {
 		//ultimi 5 mesi energia
+/*
 		SpreadEnergia energiaFebbraio = new SpreadEnergia(0.132, LocalDate.of(2025, 2, 28));
 		SpreadEnergia energiaGennaio = new SpreadEnergia(0.143, LocalDate.of(2025, 1, 30));
 		SpreadEnergia energiaDicembre = new SpreadEnergia(0.158, LocalDate.of(2024, 12, 30));
@@ -31,6 +32,7 @@ public class SpreadRunner implements CommandLineRunner {
 
 
 		//ultimi 5 mesi gas
+
 		SpreadGas gasFebbraio = new SpreadGas(0.493, LocalDate.of(2025, 2, 28));
 		SpreadGas gasGennaio = new SpreadGas(0.509, LocalDate.of(2025, 1, 30));
 		SpreadGas gasDicembre = new SpreadGas(0.533, LocalDate.of(2024, 12, 30));
@@ -41,7 +43,7 @@ public class SpreadRunner implements CommandLineRunner {
 		gasService.saveGasSpread(gasDicembre);
 		gasService.saveGasSpread(gasNovembre);
 		gasService.saveGasSpread(gasOttobre);
-
+*/
 	}
 
 

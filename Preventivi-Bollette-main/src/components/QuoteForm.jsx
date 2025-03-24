@@ -9,6 +9,7 @@ export default function QuoteForm() {
 	const navigate = useNavigate();
 	const [quoteType, setQuoteType] = useState(null);
 	const [formData, setFormData] = useState({});
+	const [isLoading, setIsLoading] = useState(false);
 
 	// Se l'utente non è autenticato, viene reindirizzato alla pagina di login
 	useEffect(() => {
@@ -81,6 +82,8 @@ export default function QuoteForm() {
 			return;
 		}
 
+		setIsLoading(true);
+
 		const formDataObj = new FormData();
 		formDataObj.append("file", file);
 
@@ -105,6 +108,8 @@ export default function QuoteForm() {
 		} catch (error) {
 			console.error(error);
 			alert(`Errore durante l'elaborazione della bolletta: ${error.message}`);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -206,15 +211,23 @@ export default function QuoteForm() {
 						)}
 						<button type="submit">Calcola</button>
 					</form>
+					<p className="attention">Oppure</p>
 					<form onSubmit={handleFileUpload}>
-						<p className="attention">Oppure</p>
-
 						<div className="form-group">
 							<label>Carica la bolletta</label>
 							<input name="bolletta" type="file" onChange={handleFileChange} />
 						</div>
 						<button type="submit">Invia</button>
 					</form>
+
+					{isLoading && (
+						<div className="modal-loading">
+							<div className="modal-content">
+								<p>Analisi dei dati in corso...</p>
+								<div className="loader"></div>
+							</div>
+						</div>
+					)}
 				</div>
 
 				{quoteType === "energia" && (

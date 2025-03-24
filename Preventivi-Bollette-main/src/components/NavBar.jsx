@@ -47,13 +47,15 @@ function NavBar() {
 				<NavLink onClick={() => setMenuOpen(false)} to="/contatti">
 					Contatti
 				</NavLink>
-				<NavLink
-					onClick={() => setMenuOpen(false)}
-					className="nav-btn-2"
-					to="/upload-bill"
-				>
-					Prova
-				</NavLink>
+				{token && user && (
+					<NavLink
+						onClick={() => setMenuOpen(false)}
+						className="nav-btn-2"
+						to="/upload-bill"
+					>
+						Prova
+					</NavLink>
+				)}
 
 				{token && user ? (
 					<div

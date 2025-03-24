@@ -98,7 +98,8 @@ export default function BillResultsPage() {
 				<div className="bill-row">
 					<span className="label">Consumo Fatturato:</span>
 					<span className="value">
-						{billData["Consumo fatturato"] || "N/A"}
+						{billData["Consumo fatturato"] || "N/A"}{" "}
+						{billData["Tipo Bolletta"] === "energia" ? "kW/h" : "Smc"}
 					</span>
 				</div>
 				<div className="bill-row">
@@ -106,54 +107,67 @@ export default function BillResultsPage() {
 					<span className="value">€ {billData["Prezzo Mercato"] || "N/A"}</span>
 				</div>
 				<div className="bill-row highlight">
-					<span className="label">Spread Applicato:</span>
-					<span className="value">€ {billData["Spread"] || "N/A"}</span>
+					<span className="label">
+						Prezzo {billData["Tipo Bolletta"] === "energia" ? "kW/h" : "Smc"}{" "}
+						del tuo fornitore attuale{" "}
+					</span>
+					<span className="value">
+						€{" "}
+						{(
+							billData["Spesa Materia Energia"] / billData["Consumo fatturato"]
+						).toFixed(2) || "N/A"}
+					</span>
 				</div>
 			</div>
 
 			{/* Offerte Energia */}
-			<h2>Offerte Energia</h2>
-			<div className="offers-container">
-				{offerteEnergia.map(offer => (
-					<div key={offer.id} className="offer-card">
-						<img
-							src={offer.logoUrl}
-							alt={offer.fornitore}
-							className="offer-logo"
-						/>
-						<h3>{offer.nome}</h3>
-						<p>{offer.descrizione}</p>
-						<p>
-							<strong>Prezzo kWh:</strong> € {offer.prezzoKwh}
-						</p>
-						<p>
-							<strong>Fornitore:</strong> {offer.fornitore}
-						</p>
+			{billData["Tipo Bolletta"] === "energia" ? (
+				<>
+					<h2>Offerte Energia</h2>
+					<div className="offers-container">
+						{offerteEnergia.map(offer => (
+							<div key={offer.id} className="offer-card">
+								<img
+									src={offer.logoUrl}
+									alt={offer.fornitore}
+									className="offer-logo"
+								/>
+								<h3>{offer.nome}</h3>
+								<p>{offer.descrizione}</p>
+								<p>
+									<strong>Prezzo kW/h:</strong> € {offer.prezzoKwh}
+								</p>
+								<p>
+									<strong>Fornitore:</strong> {offer.fornitore}
+								</p>
+							</div>
+						))}
 					</div>
-				))}
-			</div>
-
-			{/* Offerte Gas */}
-			<h2>Offerte Gas</h2>
-			<div className="offers-container">
-				{offerteGas.map(offer => (
-					<div key={offer.id} className="offer-card">
-						<img
-							src={offer.logoUrl}
-							alt={offer.fornitore}
-							className="offer-logo"
-						/>
-						<h3>{offer.nome}</h3>
-						<p>{offer.descrizione}</p>
-						<p>
-							<strong>Prezzo Smc:</strong> € {offer.prezzoSmc}
-						</p>
-						<p>
-							<strong>Fornitore:</strong> {offer.fornitore}
-						</p>
+				</>
+			) : (
+				<>
+					<h2>Offerte Gas</h2>
+					<div className="offers-container">
+						{offerteGas.map(offer => (
+							<div key={offer.id} className="offer-card">
+								<img
+									src={offer.logoUrl}
+									alt={offer.fornitore}
+									className="offer-logo"
+								/>
+								<h3>{offer.nome}</h3>
+								<p>{offer.descrizione}</p>
+								<p>
+									<strong>Prezzo Smc:</strong> € {offer.prezzoSmc}
+								</p>
+								<p>
+									<strong>Fornitore:</strong> {offer.fornitore}
+								</p>
+							</div>
+						))}
 					</div>
-				))}
-			</div>
+				</>
+			)}
 
 			<button onClick={() => navigate("/")}>Torna alla Home</button>
 		</div>

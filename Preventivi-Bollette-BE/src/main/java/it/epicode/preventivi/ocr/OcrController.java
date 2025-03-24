@@ -9,14 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
-@RequestMapping("/ocr")
+@RequestMapping ("/ocr")
 @RequiredArgsConstructor
 public class OcrController {
 
@@ -24,10 +23,10 @@ public class OcrController {
 	private final SpreadEnergiaRepository spreadEnergiaRepository;
 	private final SpreadGasRepository spreadGasRepository;
 
-	@PostMapping(value = "/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ResponseEntity<Map<String, Object>> extractBillData(@RequestParam("file") MultipartFile file) {
-		System.out.println("File ricevuto: " + file.getOriginalFilename());
-		System.out.println("Tipo MIME: " + file.getContentType());
+	@PostMapping (value = "/extract", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity<Map<String, Object>> extractBillData (@RequestParam ("file") MultipartFile file) {
+		System.out.println("📂 File ricevuto: " + file.getOriginalFilename());
+		System.out.println("📄 Tipo MIME: " + file.getContentType());
 
 		try {
 			byte[] fileData = file.getBytes();
@@ -37,52 +36,48 @@ public class OcrController {
 			// Estrai i dati dalla bolletta
 			Map<String, String> extractedData = ocrService.extractBillDetails(fileData, fileName, fileType);
 
+			// Controllo se l'OCR ha estratto qualcosa
+			if (extractedData.isEmpty() || extractedData.containsKey("Errore")) {
+				System.out.println("❌ Errore nell'estrazione OCR: " + extractedData.get("Errore"));
+				return ResponseEntity.badRequest().body(Map.of("error", "Errore nell'estrazione OCR"));
+			}
+
+
+			// estrai il tipo di bolletta
+			String tipoBolletta = extractedData.getOrDefault("Tipo Bolletta", "N/A");
+
+
 			// Estrai il periodo di fatturazione
 			String periodoFatturazione = extractedData.getOrDefault("Periodo fatturazione", "N/A");
 
-			// Determina il tipo di bolletta (energia o gas)
-			String tipoBolletta = determineBillType(extractedData);
-			System.out.println("Tipo bolletta determinato: " + tipoBolletta);
-
 			// Recupera il prezzo di mercato dal database
 			double prezzoMercato = findMarketPrice(periodoFatturazione, tipoBolletta);
-			System.out.println("Prezzo mercato trovato: " + prezzoMercato);
+			System.out.println("💰 Prezzo mercato trovato: " + prezzoMercato);
 
 			// Crea la response
 			Map<String, Object> response = new HashMap<>(extractedData);
-			response.put("Tipo Bolletta", tipoBolletta);
 			response.put("Prezzo Mercato", prezzoMercato);
 
 			return ResponseEntity.ok(response);
 
 		} catch (IOException e) {
+			System.out.println("❌ Errore nella lettura del file: " + e.getMessage());
 			return ResponseEntity.badRequest().body(Map.of("error", "Errore nella lettura del file"));
 		}
 	}
 
-
-	private String determineBillType(Map<String, String> extractedData) {
-		String spesa = extractedData.get("Spesa Materia Energia");
-		String consumo = extractedData.get("Consumo fatturato");
-
-		if (spesa != null && !spesa.equals("N/A")) {
-			return "energia";
-		} else if (consumo != null && !consumo.equals("N/A")) {
-			return "gas";
-		}
-		return "N/A";
-	}
-
-
-	private double findMarketPrice(String periodo, String tipoBolletta) {
+	private double findMarketPrice (String periodo, String tipoBolletta) {
 		if (periodo.equals("N/A") || tipoBolletta.equals("N/A")) {
 			return 0.0;
 		}
 
-		int mese = convertMonthToNumber(periodo.split(" ")[0]);
-		int anno = Integer.parseInt(periodo.split(" ")[1]);
+		String[] parts = periodo.split(" ");
+		if (parts.length < 2) {
+			return 0.0;
+		}
 
-		System.out.println("Cercando prezzo di mercato per " + tipoBolletta + " - Mese: " + mese + ", Anno: " + anno);
+		int mese = ocrService.convertMonthToNumber(parts[0]);
+		int anno = Integer.parseInt(parts[1]);
 
 		if (tipoBolletta.equals("energia")) {
 			return spreadEnergiaRepository.findByMonthAndYear(mese, anno)
@@ -94,27 +89,5 @@ public class OcrController {
 				.orElse(0.0);
 		}
 	}
-
-
-
-	private int convertMonthToNumber(String monthName) {
-		Map<String, Integer> months = new HashMap<>();
-		months.put("gennaio", 1);
-		months.put("febbraio", 2);
-		months.put("marzo", 3);
-		months.put("aprile", 4);
-		months.put("maggio", 5);
-		months.put("giugno", 6);
-		months.put("luglio", 7);
-		months.put("agosto", 8);
-		months.put("settembre", 9);
-		months.put("ottobre", 10);
-		months.put("novembre", 11);
-		months.put("dicembre", 12);
-
-		return months.getOrDefault(monthName.toLowerCase(), 0);
-	}
-
-
 
 }

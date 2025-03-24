@@ -1,6 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import "../css-components/Contact.css";
 
 function Contact() {
+	const navigate = useNavigate();
+
 	return (
 		<div className="contact-container">
 			<div className="contact-card">
@@ -23,7 +26,12 @@ function Contact() {
 						<strong>🏢 Ragione Sociale:</strong> Preventivo Bollette S.r.l.
 					</p>
 				</div>
-				<button className="contact-button">Richiedi un Preventivo</button>
+				<button
+					className="contact-button"
+					onClick={() => navigate("/upload-bill")}
+				>
+					Richiedi un Preventivo
+				</button>
 			</div>
 		</div>
 	);

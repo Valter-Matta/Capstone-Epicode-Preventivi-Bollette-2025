@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import Home from "./components/Home";
 import Login from "./components/Login";
@@ -12,8 +14,15 @@ import NavBar from "./components/NavBar";
 import Register from "./components/Register";
 import Footer from "./components/Footer";
 import SpreadResultCard from "./components/SpreadResultCard";
+import { setUserFromStorage } from "./redux/actions";
 
 function App() {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(setUserFromStorage()); // dati da local storage
+	}, [dispatch]);
+
 	return (
 		<Provider store={store}>
 			<BrowserRouter>

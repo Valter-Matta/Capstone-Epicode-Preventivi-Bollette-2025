@@ -154,7 +154,7 @@ public class OcrService {
 	}
 
 	private String findSpesaMateria (String text) {
-		Pattern pattern = Pattern.compile("(?i)spesa materia.*?€?\\s*(\\d{1,3}[,.]\\d{2})");
+		Pattern pattern = Pattern.compile("(?i)spesa materia(?:\\s+energia|\\s+prima)?\\s*:?\\s*€?\\s*(\\d{1,3}[.,]\\d{2})");
 		Matcher matcher = pattern.matcher(text);
 
 		if (matcher.find()) {

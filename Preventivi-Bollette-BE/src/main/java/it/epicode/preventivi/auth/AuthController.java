@@ -32,7 +32,7 @@ public class AuthController {
 			Set.of(Role.ROLE_USER) // Assegna il ruolo di default
 		);
 		Map<String, String> response = new HashMap<>();
-		response.put("message", "Registrazione avvenuta con successo");
+		response.put("message", "Registrazione avvenuta con successo! Controlla la tua email.");
 		return ResponseEntity.ok(response);
 	}
 

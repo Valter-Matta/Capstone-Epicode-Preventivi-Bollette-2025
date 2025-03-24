@@ -44,19 +44,21 @@ export const loginUser = (email, password) => {
 			}
 
 			const data = await response.json();
-			console.log(data);
 
 			const token = data.token;
+			const user = {
+				nome: data.nome,
+				cognome: data.cognome,
+				email: data.email,
+			};
+
+			localStorage.setItem("token", token);
+			localStorage.setItem("user", JSON.stringify(user));
 
 			dispatch({
-				type: REGISTER_USER,
-				payload: {
-					cognome: data.cognome,
-					nome: data.nome,
-					email: data.email,
-				},
+				type: LOGIN_SUCCESS,
+				payload: { token, user },
 			});
-			dispatch({ type: LOGIN_SUCCESS, payload: token });
 		} catch (error) {
 			console.error("Errore durante il login:", error);
 			alert(error.message);
@@ -68,5 +70,18 @@ export const loginUser = (email, password) => {
 export const logoutUser = () => {
 	return dispatch => {
 		dispatch({ type: LOGOUT });
+	};
+};
+
+export const setUserFromStorage = () => {
+	return dispatch => {
+		const token = localStorage.getItem("token");
+		const user = JSON.parse(localStorage.getItem("user"));
+		if (token && user) {
+			dispatch({
+				type: LOGIN_SUCCESS,
+				payload: { token, user },
+			});
+		}
 	};
 };

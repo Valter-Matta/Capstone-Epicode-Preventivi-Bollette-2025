@@ -1,5 +1,7 @@
 package it.epicode.preventivi.auth;
 
+import it.epicode.preventivi.email.EmailService;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,10 @@ public class AppUserService {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
+	@Autowired
+	private EmailService emailService;
 
-	public AppUser registerUser (String nome, String cognome,String phone, String email, String password, String confermaPwd, Set<Role> roles) {
+	public AppUser registerUser (String nome, String cognome, String phone, String email, String password, String confermaPwd, Set<Role> roles) {
 		if (appUserRepository.existsByEmail(email)) {
 			throw new EntityExistsException("Email già in uso");
 		}
@@ -46,6 +50,13 @@ public class AppUserService {
 			throw new SecurityException("Le password non corrispondono");
 		}
 		appUser.setRoles(roles);
+
+		// Invio della mail di conferma
+		try {
+			emailService.sendEmail(email, "Benvenuto!", generateEmailBody(nome));
+		} catch (MessagingException e) {
+			throw new RuntimeException("Errore durante l'invio della mail", e);
+		}
 
 		return appUserRepository.save(appUser);
 	}
@@ -74,5 +85,11 @@ public class AppUserService {
 
 
 		return appUser;
+	}
+
+	private String generateEmailBody (String nome) {
+		return "<h1>Benvenuto, " + nome + "!</h1>" +
+			"<p>Grazie per esserti registrato alla nostra piattaforma.</p>" +
+			"<p>Ti auguriamo una buona esperienza!</p>";
 	}
 }
