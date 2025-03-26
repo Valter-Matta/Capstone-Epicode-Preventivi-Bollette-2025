@@ -69,12 +69,14 @@ export default function SpreadResultCard() {
 							il tuo fornitore è di:{" "}
 						</h2>
 						<p>
-							{spread.toFixed(4)}{" "}
+							{spread.toFixed(4)}
+							{" € al "}
 							{tipoBolletta?.toUpperCase() === "GAS" ? "m³" : "kWh"}
 						</p>
 						<h2>Prezzo di mercato in base al periodo fatturazione</h2>
 						<p>
-							{prezzoMercato.toFixed(4)}{" "}
+							{prezzoMercato.toFixed(4)}
+							{" € al "}
 							{tipoBolletta?.toUpperCase() === "GAS" ? "m³" : "kWh"}
 						</p>
 					</div>

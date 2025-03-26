@@ -262,7 +262,7 @@ export default function QuoteForm() {
 			<p className="attention">
 				Inserendo manualmente le 3 voci richieste nella foto saremo in grado di
 				decretare se il tuo fornitore ti sta vendendo{" "}
-				{quoteType === "energia" && "l'energia"} ad un prezzo onesto.
+				{quoteType === "energia" ? "l'energia" : "il gas"} ad un prezzo onesto.
 				Calcoleremo il costo della materia prima in base al prezzo di mercato (
 				{quoteType === "energia" && "PSV "}
 				{quoteType === "gas" && "PUN "} rif. mese/anno), e lo compareremo con il

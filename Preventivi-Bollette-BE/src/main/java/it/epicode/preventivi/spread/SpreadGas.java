@@ -19,9 +19,4 @@ public class SpreadGas {
 	private double prezzo;
 	private LocalDate data;
 
-
-	public SpreadGas (double v, LocalDate d) {
-		this.prezzo = v;
-		this.data = d;
-	}
 }

@@ -19,8 +19,5 @@ public class SpreadEnergia {
 	private double prezzo;
 	private LocalDate data;
 
-	public SpreadEnergia (double v, LocalDate d) {
-		this.prezzo = v;
-		this.data = d;
-	}
+
 }
